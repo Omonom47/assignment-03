@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 
 var configuration = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
-var connectionString = configuration.GetConnectionString("testdb");
+var connectionString = configuration.GetConnectionString("kanban");
 
 using var con = new NpgsqlConnection(connectionString);
 con.Open();
