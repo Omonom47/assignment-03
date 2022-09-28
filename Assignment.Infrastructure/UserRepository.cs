@@ -9,7 +9,6 @@ public class UserRepository : IUserRepository
 
         Response resp;
 
-
         if (entity is null)
         {
             entity = new User { Name = user.Name, Email = user.Email };
@@ -48,7 +47,12 @@ public class UserRepository : IUserRepository
 
     public UserDTO Find(int userId)
     {
-        throw new NotImplementedException();
+        var quer = from u in _kanban.Users
+                   where u.Id == userId
+                   select new { Id = u.Id, Name = u.Name, Email = u.Email };
+
+        var user = quer.ElementAt(0);
+        return new UserDTO(user.Id, user.Name, user.Email);
     }
 
     public IReadOnlyCollection<UserDTO> Read()
