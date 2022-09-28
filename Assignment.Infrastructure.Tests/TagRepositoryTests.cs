@@ -1,6 +1,6 @@
 namespace Assignment.Infrastructure.Tests;
 
-public class TagRepositoryTests
+public class TagRepositoryTests 
 {
   [Fact]
   public void Test_tags_can_delete_force()
