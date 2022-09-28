@@ -4,7 +4,6 @@ namespace Assignment.Infrastructure.Tests;
 
 public class TagRepositoryTests : IDisposable
 {
-
   private readonly KanbanContext _context;
   private readonly TagRepository _repository;
 
@@ -40,6 +39,11 @@ public class TagRepositoryTests : IDisposable
   {
     var (response, id) = _repository.Create(new TagCreateDTO("any end"));
     response.Should().Be(Response.Conflict);
+  }
+
+  public void Dispose()
+  {
+    _context.Dispose();
   }
 
   public void Dispose()
