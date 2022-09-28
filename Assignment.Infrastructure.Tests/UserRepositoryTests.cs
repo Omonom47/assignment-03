@@ -11,28 +11,30 @@ public class UserRepositoryTests : IDisposable
   {
     var connection = new SqliteConnection("Filename=:memory:");
     connection.Open();
-    var build = new DbContextOptionsBuilder<KanbanContext>();
-    build.UseSqlite(connection);
-    var context = new KanbanContext(build.Options);
+    var builder = new DbContextOptionsBuilder<KanbanContext>();
+    builder.UseSqlite(connection);
+    var context = new KanbanContext(builder.Options);
     context.Database.EnsureCreated();
 
     context.Users.AddRange(
-      new User() {Id = 0, Name = "Ron Weasly", Email = "ronweasly@gmail.com"},
-      new User() {Id = 1, Name = "Harry Potter", Email = "harryp@hotmail.dk"});
+      new User() {Id = 6, Name = "Ron Weasly", Email = "ronweasly@gmail.com", WorkItems = new List<WorkItem>()},
+      new User() {Id = 7, Name = "Harry Potter", Email = "harryp@hotmail.dk", WorkItems = new List<WorkItem>()});
 
     context.Tags.AddRange(new Tag()
-      { Id = 0, Name = "Frontend"});
+      { Id = 8, Name = "Frontend"});
+
+    context.SaveChanges();
 
       _context = context;
-      _repository = new UserRepository();
+      _repository = new UserRepository(_context);
 
   }
    [Fact]
-  public void Test_user_can_delete_force() => _repository.Delete(0, true).Should().Be(Response.Deleted);
+  public void Test_user_can_delete_force() => _repository.Delete(6, true).Should().Be(Response.Deleted);
 
 
     [Fact]
-  public void Test_user_cannot_delete_return_Conflict() => _repository.Delete(0, true).Should().Be(Response.Conflict);
+  public void Test_user_cannot_delete_return_Conflict() => _repository.Delete(7, false).Should().Be(Response.Conflict);
 
 
   [Fact]

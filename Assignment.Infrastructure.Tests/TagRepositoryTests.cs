@@ -16,9 +16,9 @@ public class TagRepositoryTests : IDisposable
             build.UseSqlite(connection);
             var context = new KanbanContext(build.Options);
             context.Database.EnsureCreated();
-
+      context.SaveChanges();  
       _context = context;
-      _repository = new TagRepository();
+      _repository = new TagRepository(_context);
   }
   [Fact]
   public void Test_tags_can_delete_force()
