@@ -44,6 +44,10 @@ public class TagRepository : ITagRepository
         else if (tag.WorkItems.Any() && !force)
         {
             response = Response.Conflict;
+        } 
+        else if(!force)
+        {
+            response = Response.Conflict;
         }
         else
         {

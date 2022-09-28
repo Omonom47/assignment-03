@@ -20,9 +20,6 @@ public class UserRepositoryTests : IDisposable
       new User() {Id = 6, Name = "Ron Weasly", Email = "ronweasly@gmail.com", WorkItems = new List<WorkItem>()},
       new User() {Id = 7, Name = "Harry Potter", Email = "harryp@hotmail.dk", WorkItems = new List<WorkItem>()});
 
-    context.Tags.AddRange(new Tag()
-      { Id = 8, Name = "Frontend"});
-
     context.SaveChanges();
 
       _context = context;
