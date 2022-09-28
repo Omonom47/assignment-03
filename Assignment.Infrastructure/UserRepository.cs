@@ -30,7 +30,20 @@ public class UserRepository : IUserRepository
 
     public Response Delete(int userId, bool force = false)
     {
-        throw new NotImplementedException();
+        var user = _kanban.Users.FirstOrDefault(u => u.Id == userId);
+
+        Response response;
+
+        if (user.WorkItems.Any() && !force)
+        {
+            response = Response.Conflict;
+        }
+        else
+        {
+            response = Response.Deleted;
+        }
+
+        return response;
     }
 
     public UserDTO Find(int userId)
