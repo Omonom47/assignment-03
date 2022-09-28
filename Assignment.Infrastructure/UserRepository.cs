@@ -41,11 +41,11 @@ public class UserRepository : IUserRepository
 
         if (user is null)
         {
-            response = Response.NotFound;
+            response = Response.Conflict;
         }
         else if (user.WorkItems.Any() && !force)
         {
-            response = Response.Conflict;
+            response = Response.NotFound;
         }
         else
         {
