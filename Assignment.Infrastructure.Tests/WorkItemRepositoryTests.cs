@@ -6,10 +6,10 @@ public class WorkItemRepositoryTests : IDisposable
 {   
     private readonly KanbanContext _context;
     private readonly WorkItemRepository _repository;
-    public WorkItemRepositoryTests()
-      {
-        var connection = new SqliteConnection("Filename=:memory:");
-        connection.Open();
+  public WorkItemRepositoryTests()
+  {
+    var connection = new SqliteConnection("Filename=:memory:");
+    connection.Open();
         var builder = new DbContextOptionsBuilder<KanbanContext>();
         builder.UseSqlite();
         var context = new KanbanContext(builder.Options);
