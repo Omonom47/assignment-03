@@ -7,5 +7,5 @@ public class Tag
   [StringLength(100)]
   public string? Name { get; set; }
 
-
+    public IList<int>? WorkItems{get;set;}
 }
