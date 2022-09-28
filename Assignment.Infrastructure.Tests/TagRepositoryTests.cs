@@ -46,10 +46,6 @@ public class TagRepositoryTests : IDisposable
     _context.Dispose();
   }
 
-  public void Dispose()
-  {
-    _context.Dispose();
-  }
 }
 
 
