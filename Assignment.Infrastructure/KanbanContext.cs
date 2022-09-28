@@ -24,7 +24,6 @@ namespace Assignment.Infrastructure
             .Entity<WorkItem>()
             .Property(e => e.State)
             .HasConversion(new EnumToStringConverter<State>());
-
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
