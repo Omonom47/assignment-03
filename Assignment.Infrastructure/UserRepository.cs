@@ -39,11 +39,11 @@ public class UserRepository : IUserRepository
 
         Response response;
 
-        if (user.WorkItems.Any() && !force)
+        if (user is null)
         {
             response = Response.Conflict;
         }
-        else if (user is null)
+        else if (user.WorkItems.Any() && !force)
         {
             response = Response.NotFound;
         }
