@@ -8,5 +8,5 @@ public class User{
     [StringLength(100)]
     public string? Email{get;set;}
 
-    public IList<WorkItem> WorkItems{get; set;}
+    public IList<WorkItem>? WorkItems{get; set;}
 }
