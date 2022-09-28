@@ -15,6 +15,7 @@ public class UserRepository : IUserRepository
 
         Response resp;
 
+      
         if (entity is null)
         {
             entity = new User { Name = user.Name, Email = user.Email };
@@ -38,16 +39,20 @@ public class UserRepository : IUserRepository
         var user = _kanban.Users.FirstOrDefault(u => u.Id == userId);
 
         Response response;
-
-        if (user is null)
+        
+         if (user is null)
         {
             response = Response.Conflict;
         }
-        else if (user.WorkItems.Any() && !force)
+        else if (user.WorkItems!.Any() && !force)
         {
             response = Response.NotFound;
         }
-        else
+        else if(!force)
+        {
+            response = Response.Conflict;
+        }
+         else
         {
             response = Response.Deleted;
         }
