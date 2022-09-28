@@ -37,6 +37,10 @@ public class UserRepository : IUserRepository
         {
             response = Response.Conflict;
         }
+        else if (user is null)
+        {
+            response = Response.NotFound;
+        }
         else
         {
             response = Response.Deleted;
@@ -47,21 +51,42 @@ public class UserRepository : IUserRepository
 
     public UserDTO Find(int userId)
     {
-        var quer = from u in _kanban.Users
-                   where u.Id == userId
-                   select new { Id = u.Id, Name = u.Name, Email = u.Email };
+        var users = from u in _kanban.Users
+                    where u.Id == userId
+                    select new UserDTO(u.Id, u.Name, u.Email);
 
-        var user = quer.ElementAt(0);
-        return new UserDTO(user.Id, user.Name, user.Email);
+        return users.FirstOrDefault();
     }
 
     public IReadOnlyCollection<UserDTO> Read()
     {
-        throw new NotImplementedException();
+        var users = from u in _kanban.Users
+                    orderby u.Name
+                    select new UserDTO(u.Id, u.Name, u.Email);
+        return users.ToArray();
     }
 
     public Response Update(UserUpdateDTO user)
     {
-        throw new NotImplementedException();
+        var entity = _kanban.Users.Find(user.Id);
+        Response response;
+
+        if (entity is null)
+        {
+            response = Response.NotFound;
+        }
+        else if (_kanban.Users.FirstOrDefault(u => u.Id != user.Id && u.Email == user.Email) != null)
+        {
+            response = Response.Conflict;
+        }
+        else
+        {
+            entity.Name = user.Name;
+            entity.Email = user.Email;
+            _kanban.SaveChanges();
+            response = Response.Updated;
+        }
+
+        return response;
     }
 }
