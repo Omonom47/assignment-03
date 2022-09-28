@@ -3,6 +3,12 @@ namespace Assignment.Infrastructure;
 public class UserRepository : IUserRepository
 {
     private readonly KanbanContext _kanban;
+
+    public UserRepository(KanbanContext kanban)
+    {
+        _kanban = kanban;
+    }
+
     public (Response Response, int UserId) Create(UserCreateDTO user)
     {
         var entity = _kanban.Users.FirstOrDefault(k => k.Email == user.Email);
