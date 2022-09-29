@@ -57,18 +57,7 @@ public class WorkItemRepositoryTests : IDisposable
 
     [Fact]
     public void Test_delete_resolved_return_conflict() => _repository.Delete(12).Should().Be(Response.Conflict);
-    // {
-    //     //Arrange 
-    //     var response =  _repository.Delete(1);
-    //     response.Should().Be(Response.Deleted);
-
-    //     //Act
-    //     var entity = _context.WorkItems.Find(1);
-
-    //     //Assert
-    //     entity.Should().BeNull();
-
-    // }
+  
 
     [Fact]
     public void Test_delete_closed_return_conflict() => _repository.Delete(13).Should().Be(Response.Conflict);
@@ -81,12 +70,11 @@ public class WorkItemRepositoryTests : IDisposable
     {
         var (response, workitem) = _repository.Create(new WorkItemCreateDTO("black post it", 5, "Clara", new List<string>()));
         response.Should().Be(Response.Created);
-        _repository.Find(5).Should().Be(State.New);
+
+
     }
 
     
-
-
     public void Dispose()
     {
         _context.Dispose();
