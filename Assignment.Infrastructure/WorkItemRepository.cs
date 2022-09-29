@@ -15,7 +15,7 @@ public class WorkItemRepository : IWorkItemRepository
             Title = workItem.Title,
             Description = workItem.Description,
             State = State.New,
-            Tags = workItem.Tags
+            Tags = _context.Tags.Select(t => t).Where(t => workItem.Tags.Contains(t.Name)).ToList()
         };
 
         _context.WorkItems.Add(entity);
@@ -68,7 +68,7 @@ public class WorkItemRepository : IWorkItemRepository
         }
         else
         {
-            return new WorkItemDetailsDTO(workItemId, workItem.Title, workItem.Description, DateTime.Today, workItem.AssignedTo.Name, workItem.Tags.ToArray(), workItem.State, DateTime.Now);
+            return new WorkItemDetailsDTO(workItemId, workItem.Title, workItem.Description, DateTime.Today, workItem.AssignedTo.Name, workItem.Tags.Select(t => t.Name).ToArray(), workItem.State, DateTime.Now);
         }
 
     }
