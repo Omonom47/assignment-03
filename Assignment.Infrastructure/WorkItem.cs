@@ -8,11 +8,14 @@ public class WorkItem
     [StringLength(100)]
     public string? Title { get; set; }
 
-    public int AssignedTo { get; set; }
+
+    public User? AssignedTo { get; set; }
     public string? Description { get; set; }
 
     public State State { get; set; }
 
+
     public ICollection<Tag> Tags { get; set; } = new List<Tag>();
+
 
 }
