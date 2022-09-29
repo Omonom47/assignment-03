@@ -77,7 +77,7 @@ public class WorkItemRepository : IWorkItemRepository
     {
         var workItems = from w in _context.WorkItems
                         orderby w.State
-                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.ToArray(), w.State);
+                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.Select(t => t.Name).ToArray(), w.State);
 
         return workItems.ToArray();
     }
@@ -86,7 +86,7 @@ public class WorkItemRepository : IWorkItemRepository
     {
         var workItems = from w in _context.WorkItems
                         where w.State == state
-                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.ToArray(), w.State);
+                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.Select(t => t.Name).ToArray(), w.State);
 
         return workItems.ToArray();
     }
@@ -94,9 +94,9 @@ public class WorkItemRepository : IWorkItemRepository
     public IReadOnlyCollection<WorkItemDTO> ReadByTag(string tag)
     {
         var workItems = from w in _context.WorkItems
-                        where w.Tags.Contains(tag)
+                        where w.Tags.Select(t => t.Name).Contains(tag)
                         orderby w.State
-                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.ToArray(), w.State);
+                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.Select(t => t.Name).ToArray(), w.State);
 
         return workItems.ToArray();
     }
@@ -106,7 +106,7 @@ public class WorkItemRepository : IWorkItemRepository
         var workItems = from w in _context.WorkItems
                         where w.AssignedTo.Id == userId
                         orderby w.State
-                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.ToArray(), w.State);
+                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.Select(t => t.Name).ToArray(), w.State);
 
         return workItems.ToArray();
     }
@@ -115,7 +115,7 @@ public class WorkItemRepository : IWorkItemRepository
     {
         var workItems = from w in _context.WorkItems
                         where w.State == State.Removed
-                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.ToArray(), w.State);
+                        select new WorkItemDTO(w.Id, w.Title, w.AssignedTo.Name, w.Tags.Select(t => t.Name).ToArray(), w.State);
 
         return workItems.ToArray();
     }
@@ -134,7 +134,7 @@ public class WorkItemRepository : IWorkItemRepository
         {
             entity.Title = workItem.Title;
             entity.Description = workItem.Description ?? entity.Description;
-            entity.Tags = workItem.Tags ?? entity.Tags;
+            entity.Tags = _context.Tags.Select(t => t).Where(t => workItem.Tags.Contains(t.Name)).ToList() ?? entity.Tags;
             if (workItem is not null)
             {
                 entity.State = workItem.State;
