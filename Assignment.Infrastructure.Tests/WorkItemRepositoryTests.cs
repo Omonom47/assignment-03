@@ -27,6 +27,7 @@ public class WorkItemRepositoryTests : IDisposable
 
     _context = context;
     _repository = new WorkItemRepository(context);
+    context.SaveChanges();
 
   }
   [Fact]
@@ -51,7 +52,7 @@ public class WorkItemRepositoryTests : IDisposable
 
     var entity = _context.WorkItems.Find(100);
 
-    entity?.State.Should().Be(State.Removed);
+    entity!.State.Should().Be(State.Removed);
 
   }
 
@@ -68,8 +69,9 @@ public class WorkItemRepositoryTests : IDisposable
   [Fact]
   public void create_should_return_new_and_created_current_time()
   {
-    var (response, workitem) = _repository.Create(new WorkItemCreateDTO("black post it", 5, "Clara", new List<string>()));
+    var (response, workitemId) = _repository.Create(new WorkItemCreateDTO("black post it", 5, "Clara", new List<string>()));
     response.Should().Be(Response.Created);
+    _context.WorkItems.Find(workitemId)!.State.Should().Be(State.New);
   }
 
 

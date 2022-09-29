@@ -19,9 +19,9 @@ public class WorkItemRepository : IWorkItemRepository
     };
 
     _context.WorkItems.Add(entity);
+    _context.SaveChanges();
     var response = Response.Created;
     return (response, entity.Id);
-
   }
 
   public Response Delete(int workItemId)
